@@ -1,0 +1,14 @@
+pre-commit:
+    parallel: false
+    jobs:
+        - name: lint
+          run: npm run lint
+
+        - name: format
+          run: npm run format
+
+        - name: test
+          run: npm run test
+
+        - name: update-index
+          run: git update-index --again
