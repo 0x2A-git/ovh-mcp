@@ -70,3 +70,21 @@ List and try resources directly
 ```bash
  npx @modelcontextprotocol/inspector node dist/src/index.js
 ```
+
+## 🤖 VSCode x Copilot Integration
+
+Add the following in your settings.json file :
+
+```json
+{
+    // ...
+    "mcp": {
+        "inputs": [],
+        "servers": {
+            "ovh-mcp": {
+                "url": "http://localhost:8000/sse"
+            }
+        }
+    }
+}
+```

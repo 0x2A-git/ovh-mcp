@@ -12,50 +12,55 @@ jest.mock('@ovhcloud/node-ovh', () => {
 })
 
 import {
-    getConfigurationRuleTool,
-    registerDomainsConfigurationRuleTools,
-} from '../../../src/tools/domains/configuration-rule'
+    getVPSDatacentersTool,
+    registerVPSDatacenterTools,
+} from '../../../src/tools/vps/datacenter'
 import * as utils from '../../../src/utils'
 
-describe('Domains configuration rule tools', () => {
-    test('should return configuration rule details', async () => {
-        const actionNameMock = 'update'
-        const domainNameMock = 'foobar.com'
+describe('VPS datacenter tools', () => {
+    test('should return vps datacenters', async () => {
+        const countryMock = 'FR'
+        const ovhResponseMock = [
+            'sbg',
+            'syd',
+            'sgp',
+            'bhs',
+            'waw',
+            'gra',
+            'uk1',
+            'de1',
+        ]
 
-        const toolDescription = getConfigurationRuleTool
+        const toolDescription = getVPSDatacentersTool
 
-        const ovhResponseMock = {} // Partial representation because too many fields
         ovhClientRequestClientMock.mockImplementation(() => ovhResponseMock)
 
         const result: any = await toolDescription.cb(
-            { actionName: actionNameMock, domainName: domainNameMock },
+            { country: countryMock },
             {} as any
         )
 
         const content = JSON.parse(result['content'][0]['text'])
 
-        expect(content.domain_name).toEqual(domainNameMock)
-        expect(content.action_name).toEqual(actionNameMock)
-        expect(content.configuration_rule).toEqual(ovhResponseMock)
+        expect(content.datacenters).toEqual(ovhResponseMock)
     })
 
-    test('should handle configuration rule details errors', async () => {
-        const actionNameMock = 'update'
-        const domainNameMock = 'foobar.com'
+    test('should handle vps datacenters errors', async () => {
+        const countryMock = 'FR'
 
         const errorMock = JSON.stringify({
             error: 400,
             message: 'Error mock',
         })
 
-        const toolDescription = getConfigurationRuleTool
+        const toolDescription = getVPSDatacentersTool
 
         ovhClientRequestClientMock.mockImplementation(() =>
             Promise.reject(errorMock)
         )
 
         const result: any = await toolDescription.cb(
-            { actionName: actionNameMock, domainName: domainNameMock },
+            { country: countryMock },
             {} as any
         )
 
@@ -64,12 +69,12 @@ describe('Domains configuration rule tools', () => {
         expect(content).toEqual(errorMock)
     })
 
-    test('should register configuration rule tools', async () => {
+    test('should register datacenter tools', async () => {
         const registerToolMock = jest.fn()
 
         jest.spyOn(utils, 'registerTool').mockImplementation(registerToolMock)
 
-        registerDomainsConfigurationRuleTools({
+        registerVPSDatacenterTools({
             tool: jest.fn(),
         } as any)
 

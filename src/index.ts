@@ -4,6 +4,7 @@ import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js'
 import express from 'express'
 import { registerDomainsTools } from './tools/domains/index'
 import { logger } from './lib'
+import { registerVPSTools } from './tools/vps'
 
 const serverLogger = logger.child({
     moduleName: 'Server',
@@ -22,6 +23,7 @@ const server = new McpServer({
 })
 
 registerDomainsTools(server)
+registerVPSTools(server)
 
 // Endpoints
 

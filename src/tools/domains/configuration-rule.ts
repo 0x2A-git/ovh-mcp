@@ -10,8 +10,8 @@ const configurationRuleToolsLogger = logger.child({
 })
 
 export const getConfigurationRuleTool = createTool(
-    'get_configuration_rule',
-    'Get configuration rule applied for a domain in a given action',
+    'domains_get_configuration_rule',
+    'Get configuration rule applied for a domain name in a given action',
     {
         domainName: z
             .string()
@@ -24,11 +24,26 @@ export const getConfigurationRuleTool = createTool(
         configurationRuleToolsLogger.info(
             `Retrieving domains configuration rule '${args.actionName}' for domain '${args.domainName}'...`
         )
-        const configurationRule = await OVHClient.requestPromised(
-            'GET',
-            '/domain/configurationRule',
-            { domain: args.domainName, action: args.actionName }
-        )
+
+        let configurationRule: object | null = null
+
+        try {
+            configurationRule = await OVHClient.requestPromised(
+                'GET',
+                '/domain/configurationRule',
+                { domain: args.domainName, action: args.actionName }
+            )
+        } catch (err: unknown) {
+            return {
+                content: [
+                    {
+                        type: 'text',
+                        text: JSON.stringify(err),
+                    },
+                ],
+                isError: true,
+            }
+        }
 
         const output = JSON.stringify({
             domain_name: args.domainName,
