@@ -11,4 +11,4 @@ pre-commit:
           run: npm run test
 
         - name: update-index
-          run: git update-index --again
+          run: git add . && git update-index --again
