@@ -3,21 +3,22 @@ import { OVHClient } from '../../core/ovh-client'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp'
 import { logger } from '../../lib'
 
-const managedDomainsToolsLogger = logger.child({
-    moduleName: 'Domains - Managed Domains Tools',
+const vpsRootToolsLogger = logger.child({
+    moduleName: 'VPS - Root Tools',
 })
 
-export const getManagedDomainsTool = createTool(
-    'domains_list',
-    'Get the list of managed domain names',
+export const getVPSTool = createTool(
+    'vps_list',
+    'List available Virtual Private Servers services',
     {},
     {},
     async (args, extra) => {
-        managedDomainsToolsLogger.info('Retrieving managed domains...')
+        vpsRootToolsLogger.info('Retrieving VPS list...')
 
-        let domains: object | null = null
+        let vps: object | null = null
+
         try {
-            domains = await OVHClient.requestPromised('GET', '/domain')
+            vps = await OVHClient.requestPromised('GET', '/vps')
         } catch (err: unknown) {
             return {
                 content: [
@@ -31,16 +32,17 @@ export const getManagedDomainsTool = createTool(
         }
 
         const output = JSON.stringify({
-            domains: domains,
+            vps: vps,
         })
 
-        managedDomainsToolsLogger.info('Done retrieving managed domains !')
+        vpsRootToolsLogger.info('Done retrieving VPS list !')
+
         return {
             content: [{ type: 'text', text: output }],
         }
     }
 )
 
-export const registerDomainsRootTools = (server: McpServer) => {
-    registerTool(getManagedDomainsTool, server)
+export const registerVPSRootTools = (server: McpServer) => {
+    registerTool(getVPSTool, server)
 }

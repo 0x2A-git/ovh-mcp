@@ -8,17 +8,28 @@ const contactToolsLogger = logger.child({
 })
 
 export const getDomainsContactsTool = createTool(
-    'get_domain_contacts',
-    'List all contacts',
+    'domains_get_domain_contacts',
+    'List all domain related contacts',
     {},
     {},
     async (args, extra) => {
         contactToolsLogger.info('Retrieving domains contacts...')
 
-        const contacts = await OVHClient.requestPromised(
-            'GET',
-            '/domain/contact'
-        )
+        let contacts: object | null = null
+
+        try {
+            contacts = await OVHClient.requestPromised('GET', '/domain/contact')
+        } catch (err: unknown) {
+            return {
+                content: [
+                    {
+                        type: 'text',
+                        text: JSON.stringify(err),
+                    },
+                ],
+                isError: true,
+            }
+        }
 
         const output = JSON.stringify({
             contacts,

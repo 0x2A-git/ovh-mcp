@@ -50,6 +50,25 @@ describe('Domains contact tools', () => {
         expect(contacts).toEqual(contactsMock)
     })
 
+    test('should handle contact details errors', async () => {
+        const errorMock = JSON.stringify({
+            error: 400,
+            message: 'Error mock',
+        })
+
+        const toolDescription = getDomainsContactsTool
+
+        ovhClientRequestClientMock.mockImplementation(() =>
+            Promise.reject(errorMock)
+        )
+
+        const result: any = await toolDescription.cb({}, {} as any)
+
+        const content = JSON.parse(result['content'][0]['text'])
+
+        expect(content).toEqual(errorMock)
+    })
+
     test('should register contact tools', async () => {
         const registerToolMock = jest.fn()
 

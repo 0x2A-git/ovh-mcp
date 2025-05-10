@@ -11,36 +11,33 @@ jest.mock('@ovhcloud/node-ovh', () => {
     }
 })
 
-import {
-    getManagedDomainsTool,
-    registerDomainsRootTools,
-} from '../../../src/tools/domains/root'
+import { getVPSTool, registerVPSRootTools } from '../../../src/tools/vps/root'
 import * as utils from '../../../src/utils'
 
-describe('Domains root tools', () => {
-    test('should return domain names', async () => {
-        const domainNamesMock = ['mydomain.com', 'foobar.fr']
+describe('VPS root tools', () => {
+    test('should return VPS list', async () => {
+        const vpsMock = ['vps-abcdefgh.vps.ovh.net', 'vps-12345678.vps.ovh.net']
 
-        const toolDescription = getManagedDomainsTool
+        const toolDescription = getVPSTool
 
-        ovhClientRequestClientMock.mockImplementation(() => domainNamesMock)
+        ovhClientRequestClientMock.mockImplementation(() => vpsMock)
 
         const result: any = await toolDescription.cb({}, {} as any)
 
         const content = JSON.parse(result['content'][0]['text'])
 
-        const domains = content['domains']
+        const vps = content['vps']
 
-        expect(domains).toEqual(domainNamesMock)
+        expect(vps).toEqual(vpsMock)
     })
 
-    test('should handle domain names errors', async () => {
+    test('should handle VPS list errors', async () => {
         const errorMock = JSON.stringify({
             error: 400,
             message: 'Error mock',
         })
 
-        const toolDescription = getManagedDomainsTool
+        const toolDescription = getVPSTool
 
         ovhClientRequestClientMock.mockImplementation(() =>
             Promise.reject(errorMock)
@@ -58,7 +55,7 @@ describe('Domains root tools', () => {
 
         jest.spyOn(utils, 'registerTool').mockImplementation(registerToolMock)
 
-        registerDomainsRootTools({
+        registerVPSRootTools({
             tool: jest.fn(),
         } as any)
 

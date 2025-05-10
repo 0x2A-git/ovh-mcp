@@ -1,0 +1,96 @@
+# VPS
+
+Covers Virtual Private Servers API actions
+
+## Endpoints implementation status
+
+- [x] GET /vps
+- [x] GET /vps/datacenter
+- [ ] GET /vps/order/rule/datacenter
+- [ ] GET /vps/order/rule/osChoices
+- [x] GET /vps/{serviceName}
+- [ ] PUT /vps/{serviceName}
+- [ ] POST /vps/{serviceName}/abortSnapshot
+- [ ] GET /vps/{serviceName}/activeOptions
+- [ ] GET /vps/{serviceName}/automatedBackup
+- [ ] GET /vps/{serviceName}/automatedBackup/attachedBackup
+- [ ] POST /vps/{serviceName}/automatedBackup/detachBackup
+- [ ] POST /vps/{serviceName}/automatedBackup/reschedule
+- [ ] POST /vps/{serviceName}/automatedBackup/restore
+- [ ] GET /vps/{serviceName}/automatedBackup/restorePoints
+- [ ] GET /vps/{serviceName}/availableUpgrade
+- [ ] GET /vps/{serviceName}/backupftp
+- [ ] GET /vps/{serviceName}/backupftp/access
+- [ ] POST /vps/{serviceName}/backupftp/access
+- [ ] GET /vps/{serviceName}/backupftp/access/{ipBlock}
+- [ ] PUT /vps/{serviceName}/backupftp/access/{ipBlock}
+- [ ] DEL /vps/{serviceName}/backupftp/access/{ipBlock}
+- [ ] GET /vps/{serviceName}/backupftp/authorizableBlocks
+- [ ] POST /vps/{serviceName}/backupftp/password
+- [ ] POST /vps/{serviceName}/changeContact
+- [ ] POST /vps/{serviceName}/confirmTermination
+- [ ] POST /vps/{serviceName}/createSnapshot
+- [ ] GET /vps/{serviceName}/datacenter
+- [ ] GET /vps/{serviceName}/disks
+- [ ] GET /vps/{serviceName}/disks/{id}
+- [ ] PUT /vps/{serviceName}/disks/{id}
+- [ ] GET /vps/{serviceName}/disks/{id}/monitoring
+- [ ] GET /vps/{serviceName}/disks/{id}/use
+- [ ] GET /vps/{serviceName}/distribution
+- [ ] GET /vps/{serviceName}/distribution/software
+- [ ] GET /vps/{serviceName}/distribution/software/{softwareId}
+- [ ] POST /vps/{serviceName}/getConsoleUrl
+- [ ] GET /vps/{serviceName}/images/available
+- [ ] GET /vps/{serviceName}/images/available/{id}
+- [ ] GET /vps/{serviceName}/images/current
+- [ ] GET /vps/{serviceName}/ipCountryAvailable
+- [ ] GET /vps/{serviceName}/ips
+- [ ] GET /vps/{serviceName}/ips/{ipAddress}
+- [ ] PUT /vps/{serviceName}/ips/{ipAddress}
+- [ ] DEL /vps/{serviceName}/ips/{ipAddress}
+- [ ] GET /vps/{serviceName}/migration2016
+- [ ] POST /vps/{serviceName}/migration2016
+- [ ] GET /vps/{serviceName}/migration2018
+- [ ] POST /vps/{serviceName}/migration2018
+- [ ] GET /vps/{serviceName}/models
+- [ ] GET /vps/{serviceName}/monitoring
+- [ ] POST /vps/{serviceName}/openConsoleAccess
+- [ ] GET /vps/{serviceName}/option
+- [ ] GET /vps/{serviceName}/option/{option}
+- [ ] DEL /vps/{serviceName}/option/{option}
+- [x] POST /vps/{serviceName}/reboot
+- [ ] POST /vps/{serviceName}/rebuild
+- [ ] POST /vps/{serviceName}/reinstall
+- [ ] GET /vps/{serviceName}/secondaryDnsDomains
+- [ ] POST /vps/{serviceName}/secondaryDnsDomains
+- [ ] GET /vps/{serviceName}/secondaryDnsDomains/{domain}
+- [ ] PUT /vps/{serviceName}/secondaryDnsDomains/{domain}
+- [ ] DEL /vps/{serviceName}/secondaryDnsDomains/{domain}
+- [ ] GET /vps/{serviceName}/secondaryDnsDomains/{domain}/dnsServer
+- [ ] GET /vps/{serviceName}/secondaryDnsNameServerAvailable
+- [ ] GET /vps/{serviceName}/serviceInfos
+- [ ] PUT /vps/{serviceName}/serviceInfos
+- [ ] POST /vps/{serviceName}/setPassword
+- [ ] GET /vps/{serviceName}/snapshot
+- [ ] PUT /vps/{serviceName}/snapshot
+- [ ] DEL /vps/{serviceName}/snapshot
+- [ ] GET /vps/{serviceName}/snapshot/download
+- [ ] POST /vps/{serviceName}/snapshot/revert
+- [ ] POST /vps/{serviceName}/start
+- [ ] GET /vps/{serviceName}/statistics
+- [ ] GET /vps/{serviceName}/status
+- [ ] POST /vps/{serviceName}/stop
+- [ ] GET /vps/{serviceName}/tasks
+- [ ] GET /vps/{serviceName}/tasks/{id}
+- [ ] GET /vps/{serviceName}/templates
+- [ ] GET /vps/{serviceName}/templates/{id}
+- [ ] GET /vps/{serviceName}/templates/{id}/software
+- [ ] GET /vps/{serviceName}/templates/{id}/software/{softwareId}
+- [ ] POST /vps/{serviceName}/terminate
+- [ ] GET /vps/{serviceName}/use
+- [ ] GET /vps/{serviceName}/veeam
+- [ ] GET /vps/{serviceName}/veeam/restorePoints
+- [ ] GET /vps/{serviceName}/veeam/restorePoints/{id}
+- [ ] POST /vps/{serviceName}/veeam/restorePoints/{id}/restore
+- [ ] GET /vps/{serviceName}/veeam/restoredBackup
+- [ ] DEL /vps/{serviceName}/veeam/restoredBackup
