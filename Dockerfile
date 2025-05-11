@@ -9,7 +9,7 @@ COPY ./dist/ .
 COPY ./package*.json ./
 
 
-RUN npm ci
+RUN npm ci --omit=dev
 
 EXPOSE 8000
 
