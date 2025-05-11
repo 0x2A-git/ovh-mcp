@@ -63,6 +63,8 @@ npm run build
 # Run
 node dist/src/index.js
 
+# Dev only : Run tests with coverage
+npm run test
 ```
 
 List and try resources directly
