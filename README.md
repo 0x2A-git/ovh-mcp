@@ -38,11 +38,16 @@
 # Clone the repo
 git clone https://github.com/0x2A-git/ovh-mcp.git && cd ovh-mcp
 
+# Build
+npm ci
+
+npm run build
+
 # Edit env file to add OVH credentials
 cp .env.sample .env
 
 # Run using Docker Compose
-docker-compose up
+docker compose up
 ```
 
 ## 🛠️ Full Setup
