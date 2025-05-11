@@ -1,9 +1,22 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import 'dotenv/config'
+import { mcpConfigSchema } from './schemas/mcp-config.schema'
+
+const PORT = process.env.PORT || 8000
+
+mcpConfigSchema.parse({
+    PORT: PORT,
+    OVH_API_APPLICATION_KEY: process.env.OVH_API_APPLICATION_KEY,
+    OVH_API_APPLICATION_SECRET: process.env.OVH_API_APPLICATION_SECRET,
+    OVH_API_CONSUMER_KEY: process.env.OVH_API_CONSUMER_KEY,
+    SSH_PRIVATE_KEY_FILE: process.env.SSH_PRIVATE_KEY_FILE,
+})
+
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js'
 import express from 'express'
-import { registerDomainsTools } from './tools/domains/index'
 import { logger } from './lib'
+import { registerDomainsTools } from './tools/domains/index'
 import { registerVPSTools } from './tools/vps'
 
 const serverLogger = logger.child({
@@ -11,8 +24,6 @@ const serverLogger = logger.child({
 })
 
 serverLogger.info('Initializing server...')
-
-const PORT = process.env.PORT || 8000
 
 const app = express()
 

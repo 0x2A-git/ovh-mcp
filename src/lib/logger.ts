@@ -14,7 +14,7 @@ const consoleFormat = winston.format.combine(
 )
 
 export const logger = winston.createLogger({
-    level: 'info',
+    level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
     format: winston.format.json(),
     transports: [
         new winston.transports.File({ filename: 'error.log', level: 'error' }),

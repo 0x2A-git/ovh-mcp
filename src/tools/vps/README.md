@@ -44,7 +44,7 @@ Covers Virtual Private Servers API actions
 - [ ] GET /vps/{serviceName}/images/available/{id}
 - [ ] GET /vps/{serviceName}/images/current
 - [ ] GET /vps/{serviceName}/ipCountryAvailable
-- [ ] GET /vps/{serviceName}/ips
+- [x] GET /vps/{serviceName}/ips
 - [ ] GET /vps/{serviceName}/ips/{ipAddress}
 - [ ] PUT /vps/{serviceName}/ips/{ipAddress}
 - [ ] DEL /vps/{serviceName}/ips/{ipAddress}

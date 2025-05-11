@@ -1,3 +1,8 @@
+import * as fs from 'fs/promises'
+import * as sshClientLib from '../../../src/lib/ssh2/client'
+import { Client as SSHClient } from 'ssh2'
+
+jest.mock('fs/promises')
 import * as Client from '@ovhcloud/node-ovh'
 
 const ovhClientRequestClientMock = jest.fn()
@@ -12,14 +17,20 @@ jest.mock('@ovhcloud/node-ovh', () => {
 })
 
 import {
+    executeCommandsVPSServiceTool,
     getConsoleUrlVPSServiceTool,
+    getIPAddressesVPSServiceTool,
     getVPSServicePropertiesTool,
     rebootVPSServiceTool,
     registerVPSServiceTools,
 } from '../../../src/tools/vps/service'
 import * as utils from '../../../src/utils'
+import { SSHCommandExecutionResult } from '../../../src/lib/ssh2/client'
 
 describe('VPS service tools', () => {
+    /**
+     * API Tools
+     */
     test('should return VPS properties', async () => {
         const vpsMock = {
             netbootMode: 'local',
@@ -140,6 +151,51 @@ describe('VPS service tools', () => {
         expect(content).toEqual(errorMock)
     })
 
+    test('should return VPS ip addresses', async () => {
+        const ipAddressesMock = ['123.123.123.123', '1234:1234:123:123::1234']
+
+        const toolDescription = getIPAddressesVPSServiceTool
+
+        ovhClientRequestClientMock.mockImplementation(() => ipAddressesMock)
+
+        const result: any = await toolDescription.cb(
+            {
+                serviceName: 'vps-abcdefgh.vps.ovh.net',
+            },
+            {} as any
+        )
+
+        const content = JSON.parse(result['content'][0]['text'])
+
+        const ipAddresses = content['ip_addresses']
+
+        expect(ipAddresses).toEqual(ipAddressesMock)
+    })
+
+    test('should handle VPS return ip addresses errors', async () => {
+        const errorMock = JSON.stringify({
+            error: 400,
+            message: 'Error mock',
+        })
+
+        const toolDescription = getIPAddressesVPSServiceTool
+
+        ovhClientRequestClientMock.mockImplementation(() =>
+            Promise.reject(errorMock)
+        )
+
+        const result: any = await toolDescription.cb(
+            {
+                serviceName: 'vps-abcdefgh.vps.ovh.net',
+            },
+            {} as any
+        )
+
+        const content = JSON.parse(result['content'][0]['text'])
+
+        expect(content).toEqual(errorMock)
+    })
+
     test('should reboot VPS', async () => {
         const responseMock = {
             status: {
@@ -184,6 +240,93 @@ describe('VPS service tools', () => {
         const result: any = await toolDescription.cb(
             {
                 serviceName: 'vps-abcdefgh.vps.ovh.net',
+            },
+            {} as any
+        )
+
+        const content = JSON.parse(result['content'][0]['text'])
+
+        expect(content).toEqual(errorMock)
+    })
+
+    /**
+     * Custom Tools
+     */
+
+    test('should execute ssh commands', async () => {
+        const sshResponseMock: SSHCommandExecutionResult = {
+            code: 0,
+            signal: null,
+            data: 'Hello world !',
+        }
+
+        const hostMock = '123.123.123.123'
+        const sshPortMock = 22
+        const commandsMock = ['cat file.txt']
+        const usernameMock = 'ai'
+
+        jest.spyOn(fs, 'readFile').mockImplementation(() =>
+            Promise.resolve('Private key mock')
+        )
+
+        jest.spyOn(SSHClient.prototype, 'connect').mockImplementation(
+            (opts) => Promise.resolve() as any
+        )
+
+        jest.spyOn(sshClientLib, 'sshClientReady').mockImplementation(
+            (client) => Promise.resolve()
+        )
+
+        jest.spyOn(sshClientLib, 'sshSendCommand').mockImplementation(
+            (client, command, rawOutput) => Promise.resolve(sshResponseMock)
+        )
+
+        jest.spyOn(SSHClient.prototype, 'end').mockImplementationOnce(
+            () => Promise.resolve() as any
+        )
+
+        const toolDescription = executeCommandsVPSServiceTool
+
+        const toolResult: any = await toolDescription.cb(
+            {
+                vpsIpAddress: hostMock,
+                sshPort: sshPortMock,
+                commands: commandsMock,
+                username: usernameMock,
+            },
+            {} as any
+        )
+
+        const content = JSON.parse(toolResult['content'][0]['text'])
+
+        const commandsResult = content['commands_result']
+
+        expect(commandsResult).toEqual([sshResponseMock])
+    })
+
+    test('should handle execute ssh commands fails', async () => {
+        const hostMock = '123.123.123.123'
+        const sshPortMock = 22
+        const commandsMock = ['cat file.txt']
+        const usernameMock = 'ai'
+
+        const errorMock = JSON.stringify({
+            error: 400,
+            message: 'Error mock',
+        })
+
+        const toolDescription = executeCommandsVPSServiceTool
+
+        jest.spyOn(fs, 'readFile').mockImplementation(() =>
+            Promise.reject(errorMock)
+        )
+
+        const result: any = await toolDescription.cb(
+            {
+                vpsIpAddress: hostMock,
+                sshPort: sshPortMock,
+                commands: commandsMock,
+                username: usernameMock,
             },
             {} as any
         )
