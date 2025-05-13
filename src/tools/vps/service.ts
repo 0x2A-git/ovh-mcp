@@ -113,7 +113,7 @@ export const getConsoleUrlVPSServiceTool = createTool(
 
 export const getIPAddressesVPSServiceTool = createTool(
     'vps_service_get_ip_addresses',
-    'Return IP addresses associated to given VPS',
+    'Return IP addresses associated to given VPS. Use it whenever tool asks for VPS ip address',
     {
         serviceName: serviceName,
     },
@@ -193,6 +193,96 @@ export const rebootVPSServiceTool = createTool(
 
         vpsServiceToolsLogger.info(
             `Done sending reboot command to VPS ${args.serviceName} !`
+        )
+
+        return {
+            content: [{ type: 'text', text: output }],
+        }
+    }
+)
+
+export const startVPSServiceTool = createTool(
+    'vps_service_start',
+    'Request to start Virtual Private Server machine',
+    {
+        serviceName: serviceName,
+    },
+    {},
+    async (args, extra) => {
+        vpsServiceToolsLogger.info(
+            `Sending start command to VPS ${args.serviceName}...`
+        )
+
+        let status: object | null = null
+
+        try {
+            status = await OVHClient.requestPromised(
+                'POST',
+                `/vps/${args.serviceName}/start`
+            )
+        } catch (err: unknown) {
+            return {
+                content: [
+                    {
+                        type: 'text',
+                        text: JSON.stringify(err),
+                    },
+                ],
+                isError: true,
+            }
+        }
+
+        const output = JSON.stringify({
+            status: status,
+        })
+
+        vpsServiceToolsLogger.info(
+            `Done sending start command to VPS ${args.serviceName} !`
+        )
+
+        return {
+            content: [{ type: 'text', text: output }],
+        }
+    }
+)
+
+export const stopVPSServiceTool = createTool(
+    'vps_service_stop',
+    'Request to stop Virtual Private Server machine',
+    {
+        serviceName: serviceName,
+    },
+    {},
+    async (args, extra) => {
+        vpsServiceToolsLogger.info(
+            `Sending stop command to VPS ${args.serviceName}...`
+        )
+
+        let status: object | null = null
+
+        try {
+            status = await OVHClient.requestPromised(
+                'POST',
+                `/vps/${args.serviceName}/stop`
+            )
+        } catch (err: unknown) {
+            return {
+                content: [
+                    {
+                        type: 'text',
+                        text: JSON.stringify(err),
+                    },
+                ],
+                isError: true,
+            }
+        }
+
+        const output = JSON.stringify({
+            status: status,
+        })
+
+        vpsServiceToolsLogger.info(
+            `Done sending stop command to VPS ${args.serviceName} !`
         )
 
         return {
@@ -283,6 +373,8 @@ export const registerVPSServiceTools = (server: McpServer) => {
     registerTool(getConsoleUrlVPSServiceTool, server)
     registerTool(getIPAddressesVPSServiceTool, server)
     registerTool(rebootVPSServiceTool, server)
+    registerTool(startVPSServiceTool, server)
+    registerTool(stopVPSServiceTool, server)
     // Custom
     registerTool(executeCommandsVPSServiceTool, server)
 }

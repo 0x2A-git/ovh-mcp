@@ -1,9 +1,10 @@
 services:
-    ovh-mcp:
+    server:
+        user: '1000:1000'
         build: .
         ports:
             - '8000:8000'
         volumes:
-            - .env:/home/node/.env
+            - ./.env:/home/node/.env
         environment:
             - NODE_ENV=production
