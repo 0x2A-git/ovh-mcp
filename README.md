@@ -32,6 +32,14 @@
 
 ---
 
+## 📋 Requirements
+
+Node.js: v22
+
+OVHcloud API credentials : https://www.ovh.com/auth/api/createToken
+
+---
+
 ## 🚀 Quick Start
 
 ```bash

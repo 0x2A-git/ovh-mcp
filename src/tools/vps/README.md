@@ -76,10 +76,10 @@ Covers Virtual Private Servers API actions
 - [ ] DEL /vps/{serviceName}/snapshot
 - [ ] GET /vps/{serviceName}/snapshot/download
 - [ ] POST /vps/{serviceName}/snapshot/revert
-- [ ] POST /vps/{serviceName}/start
+- [x] POST /vps/{serviceName}/start
 - [ ] GET /vps/{serviceName}/statistics
 - [ ] GET /vps/{serviceName}/status
-- [ ] POST /vps/{serviceName}/stop
+- [x] POST /vps/{serviceName}/stop
 - [ ] GET /vps/{serviceName}/tasks
 - [ ] GET /vps/{serviceName}/tasks/{id}
 - [ ] GET /vps/{serviceName}/templates

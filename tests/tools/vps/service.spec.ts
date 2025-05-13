@@ -23,6 +23,8 @@ import {
     getVPSServicePropertiesTool,
     rebootVPSServiceTool,
     registerVPSServiceTools,
+    startVPSServiceTool,
+    stopVPSServiceTool,
 } from '../../../src/tools/vps/service'
 import * as utils from '../../../src/utils'
 import { SSHCommandExecutionResult } from '../../../src/lib/ssh2/client'
@@ -234,6 +236,108 @@ describe('VPS service tools', () => {
         const toolDescription = rebootVPSServiceTool
 
         ovhClientRequestClientMock.mockImplementation(async () =>
+            Promise.reject(errorMock)
+        )
+
+        const result: any = await toolDescription.cb(
+            {
+                serviceName: 'vps-abcdefgh.vps.ovh.net',
+            },
+            {} as any
+        )
+
+        const content = JSON.parse(result['content'][0]['text'])
+
+        expect(content).toEqual(errorMock)
+    })
+
+    test('should start VPS', async () => {
+        const responseMock = {
+            date: '2025-05-13T08:35:24.294Z',
+            id: 0,
+            progress: 0,
+            state: 'blocked',
+            type: 'addVeeamBackupJob',
+        }
+
+        const toolDescription = startVPSServiceTool
+
+        ovhClientRequestClientMock.mockImplementation(() => responseMock)
+
+        const result: any = await toolDescription.cb(
+            {
+                serviceName: 'vps-abcdefgh.vps.ovh.net',
+            },
+            {} as any
+        )
+
+        const content = JSON.parse(result['content'][0]['text'])
+
+        const status = content['status']
+
+        expect(status).toEqual(responseMock)
+    })
+
+    test('should handle start VPS errors', async () => {
+        const errorMock = JSON.stringify({
+            error: 400,
+            message: 'Error mock',
+        })
+
+        const toolDescription = startVPSServiceTool
+
+        ovhClientRequestClientMock.mockImplementation(() =>
+            Promise.reject(errorMock)
+        )
+
+        const result: any = await toolDescription.cb(
+            {
+                serviceName: 'vps-abcdefgh.vps.ovh.net',
+            },
+            {} as any
+        )
+
+        const content = JSON.parse(result['content'][0]['text'])
+
+        expect(content).toEqual(errorMock)
+    })
+
+    test('should stop VPS', async () => {
+        const responseMock = {
+            date: '2025-05-13T08:29:30.572Z',
+            id: 0,
+            progress: 0,
+            state: 'blocked',
+            type: 'addVeeamBackupJob',
+        }
+
+        const toolDescription = stopVPSServiceTool
+
+        ovhClientRequestClientMock.mockImplementation(() => responseMock)
+
+        const result: any = await toolDescription.cb(
+            {
+                serviceName: 'vps-abcdefgh.vps.ovh.net',
+            },
+            {} as any
+        )
+
+        const content = JSON.parse(result['content'][0]['text'])
+
+        const status = content['status']
+
+        expect(status).toEqual(responseMock)
+    })
+
+    test('should handle stop VPS errors', async () => {
+        const errorMock = JSON.stringify({
+            error: 400,
+            message: 'Error mock',
+        })
+
+        const toolDescription = stopVPSServiceTool
+
+        ovhClientRequestClientMock.mockImplementation(() =>
             Promise.reject(errorMock)
         )
 
