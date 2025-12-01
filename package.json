@@ -19,7 +19,7 @@
         "@modelcontextprotocol/sdk": "1.11.0",
         "@ovhcloud/node-ovh": "3.0.0",
         "dotenv": "16.5.0",
-        "express": "5.1.0",
+        "express": "5.2.1",
         "ssh2": "1.16.0",
         "winston": "3.17.0"
     },
