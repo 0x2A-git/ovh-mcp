@@ -16,7 +16,7 @@
     "author": "Lucas Martin",
     "license": "ISC",
     "dependencies": {
-        "@modelcontextprotocol/sdk": "1.11.0",
+        "@modelcontextprotocol/sdk": "1.25.2",
         "@ovhcloud/node-ovh": "3.0.0",
         "dotenv": "16.5.0",
         "express": "5.1.0",
